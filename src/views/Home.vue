@@ -1,12 +1,12 @@
 <template>
   <div>
     <Navbar />
-    <h1 class="mt-10 text-center">Lista de Cursos</h1>
+    <h1 class="my-10 text-center">Lista de Cursos</h1>
 
-    <v-container>
-      <v-row justify="space-around">
-        <v-col cols="12" md="6" lg="4" v-for="(item,index) in courses" :key="index">
-          <v-card width="350">
+    <v-container class="mb-5">
+      <v-row >
+        <v-col cols="12" sm="6" lg="4" v-for="(item,index) in courses" :key="index" >
+          <v-card width="360" class="mx-auto">
             <v-img height="250px" width="250px" :src="item.imagen" class="mx-auto">
             </v-img>
             <v-card-text class="my-bgGray">
@@ -73,9 +73,8 @@
       }
     },
     filters: {
-      dateFormat(valor) {
-        let fecha = new Intl.DateTimeFormat('cl').format(valor.toDate());
-        return fecha; 
+      dateFormat(registerData) {
+        return new Intl.DateTimeFormat('cl').format(registerData.toDate());
       }
     }
   }

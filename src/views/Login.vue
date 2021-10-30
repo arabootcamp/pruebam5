@@ -3,7 +3,7 @@
     <Navbar />
 
     <v-container>
-      <h1 class="mt-10">Login de Usuario</h1>
+      <h1 class="my-10">Login de Usuario</h1>
 
       <v-form ref="form" v-model="valid" lazy-validation>
 
@@ -32,7 +32,7 @@
             <div class="text-h6 pa-12">{{modal.text}}</div>
           </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn text @click="dialog.value = false">Close</v-btn>
+            <v-btn elevation="2" @click="dialog.value = false">Close</v-btn>
           </v-card-actions>
         </v-card>
       </template>
@@ -43,6 +43,10 @@
 
 <script>
   import Navbar from '@/components/Navbar.vue'
+  import {
+    passwordRules,
+    emailRules
+  } from '@/module/rules.js'
   import {
     getAuth,
     signInWithEmailAndPassword,
@@ -58,16 +62,9 @@
         valid: true,
         email: '',
         password: '',
-        emailRules: [
-          v => !!v || 'E-mail es requerido',
-          v => /.+@.+\..+/.test(v) || 'E-mail debe ser valido',
-        ],
+        emailRules,
         showPassword: false,
-        passwordRules: [
-          value => !!value || 'Password es requerida',
-          v => (v && v.length >= 6) || 'La password debe tener mínimo 6 caracteres',
-          v => (v && v.length <= 20) || 'La password debe tener máximo 20 caracteres',
-        ],
+        passwordRules,
         modal: {
           show: false,
           text: '',
@@ -83,7 +80,7 @@
               // Signed in
               this.modal.text = '';
               this.modal.show = false;
-              this.$store.dispatch('setUserEmail',this.email);
+              this.$store.dispatch('setUserEmail', this.email);
               this.$router.push('/home');
             })
             .catch((error) => {

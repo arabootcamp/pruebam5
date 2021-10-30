@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [{
-    path: '/',
+    path: '/login',
     name: 'Login',
     component: () => import( /* webpackChunkName: "Login" */ '../views/Login.vue')
   },
@@ -30,7 +30,7 @@ const routes = [{
     },
   },
   {
-    path: '/edition:id',
+    path: '/edition/:id',
     name: 'Edition',
     component: () => import( /* webpackChunkName: "Edition" */ '../views/Edition.vue'),
     props: true,
@@ -40,7 +40,7 @@ const routes = [{
   },
   {
     path: '*',
-    redirect: '/'
+    redirect: '/login'
   },
 ]
 

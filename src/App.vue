@@ -15,7 +15,7 @@ export default {
     //
   }),
   created(){
-    this.$store.dispatch('coursesRequestDb')
+   this.$store.dispatch('coursesRequestDb')
   }
 };
 </script>

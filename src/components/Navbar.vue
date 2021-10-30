@@ -15,14 +15,14 @@
     </v-app-bar>
 
     <!--Barra lateral-->
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer v-model="drawer" absolute temporary app>
       <v-list nav dense>
 
         <v-list-item :to="{name: 'Home'}">
           <v-list-item-icon>
             <v-icon>mdi-home</v-icon>
           </v-list-item-icon>
-          <v-list-item-title>Home</v-list-item-title>
+          <v-list-item-title >Home</v-list-item-title>
         </v-list-item>
 
         <v-list-item :to="{name: 'Administration'}">

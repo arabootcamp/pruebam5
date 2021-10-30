@@ -3,7 +3,7 @@
     <Navbar />
 
     <v-container>
-      <h1 class="mt-10">Registro de Usuario</h1>
+      <h1 class="my-10">Registro de Usuario</h1>
 
       <v-form ref="form" v-model="valid" lazy-validation>
 
@@ -44,6 +44,10 @@
 <script>
   import Navbar from '@/components/Navbar.vue'
   import {
+    passwordRules,
+    emailRules
+  } from '@/module/rules.js'
+  import {
     getAuth,
     createUserWithEmailAndPassword,
   } from "firebase/auth";
@@ -58,16 +62,9 @@
         valid: true,
         email: '',
         password: '',
-        emailRules: [
-          v => !!v || 'E-mail es requerido',
-          v => /.+@.+\..+/.test(v) || 'E-mail debe ser valido',
-        ],
+        emailRules,
         showPassword: false,
-        passwordRules: [
-          value => !!value || 'Password es requerida',
-          v => (v && v.length >= 6) || 'La password debe tener mínimo 6 caracteres',
-          v => (v && v.length <= 20) || 'La password debe tener máximo 20 caracteres',
-        ],
+        passwordRules,
         modal: {
           show: false,
           text: '',
