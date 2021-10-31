@@ -154,7 +154,6 @@
       },
       modalConfirm(){
         this.modalCustom('', false, false);
-        console.log(this.course)
         this.$store.dispatch('updateCoursetDb',this.course)
         .then(()=>{
           this.modalCustom('Actualización de curso realizada.',false,true)

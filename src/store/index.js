@@ -4,7 +4,7 @@ import {
   collection,
   getDocs,
   addDoc,
-  //setDoc,
+  setDoc,
   doc,
   deleteDoc
 } from "firebase/firestore";
@@ -99,14 +99,12 @@ export default new Vuex.Store({
     async updateCoursetDb({
       dispatch
     }, payload) {
-      //let key=payload.key;
+      let key = payload.key;
       delete payload.key;
-      //let array=payload.fechaRegistro.split('-');
-      let data;
-      data=payload.toString();
-      //data.fechaRegistro = new Date(array[2],array[1],array[0])
-     console.log(data)
-      // await setDoc(doc(dbFire, "courses", key), data);
+      let array = payload.fechaRegistro.split('-');
+      let data = JSON.parse(JSON.stringify(payload));
+      data.fechaRegistro = new Date(array[2], array[1], array[0])
+      await setDoc(doc(dbFire, "courses", key), data);
       await dispatch('coursesRequestDb');
     },
     async deleteCourseDb({
