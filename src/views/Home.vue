@@ -4,8 +4,8 @@
     <h1 class="my-10 text-center">Lista de Cursos</h1>
 
     <v-container class="mb-5">
-      <v-row >
-        <v-col cols="12" sm="6" lg="4" v-for="(item,index) in courses" :key="index" >
+      <v-row>
+        <v-col cols="12" sm="6" lg="4" v-for="(item,index) in courses" :key="index">
           <v-card width="360" class="mx-auto">
             <v-img height="250px" width="250px" :src="item.imagen" class="mx-auto">
             </v-img>
@@ -75,7 +75,7 @@
     filters: {
       dateFormat(registerData) {
         return new Intl.DateTimeFormat('cl').format(registerData.toDate());
-      }
+      },
     }
   }
 </script>

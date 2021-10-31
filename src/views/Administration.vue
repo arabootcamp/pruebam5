@@ -19,7 +19,7 @@
 
         <template v-slot:item.fechaRegistro="{ item }">
           <v-chip color="green" dark>
-            {{ item.fechaRegistro | dateFormat}}
+            {{ item.fechaRegistro | dateFormat }}
           </v-chip>
         </template>
 

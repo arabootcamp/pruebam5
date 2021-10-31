@@ -93,7 +93,7 @@
     },
     data() {
       return {
-        course:[],
+        course: [],
         valid: true,
         modal: {
           show: false,
@@ -124,9 +124,10 @@
           return false;
       },
     },
-    created() {
-      this.course = this.getOneCourse(this.id);
-      let date = this.course.fechaRegistro.toDate();
+    mounted() {
+      let tmp = this.getOneCourse(this.id);
+      this.course=JSON.parse(JSON.stringify(tmp));
+      let date = tmp.fechaRegistro.toDate();
       let dateFormat = new Intl.DateTimeFormat('cl').format(date);
       this.course.fechaRegistro = dateFormat;
     },
@@ -152,15 +153,15 @@
       resetValidation() {
         this.$refs.form.resetValidation()
       },
-      modalConfirm(){
+      modalConfirm() {
         this.modalCustom('', false, false);
-        this.$store.dispatch('updateCoursetDb',this.course)
-        .then(()=>{
-          this.modalCustom('Actualización de curso realizada.',false,true)
-        })
-        .catch((error)=>{
-          this.modalCustom(error,false,true);
-        })
+        this.$store.dispatch('updateCoursetDb', this.course)
+          .then(() => {
+            this.modalCustom('Actualización de curso realizada.', false, true)
+          })
+          .catch((error) => {
+            this.modalCustom(error, false, true);
+          })
       }
     }
   }
