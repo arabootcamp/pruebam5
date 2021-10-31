@@ -64,18 +64,18 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    mutaUserEmail: (state, email) => {
-      state.userEmail = email;
+    mutaUserEmail: (state, data) => {
+      state.userEmail = data;
     },
     mutaCourses: (state, coursesLst) => {
       state.courses = coursesLst;
-    }
+    },
   },
   actions: {
     setUserEmail({
       commit
-    }, email) {
-      commit('mutaUserEmail', email);
+    }, data) {
+      commit('mutaUserEmail', data);
     },
     async coursesRequestDb({
       commit

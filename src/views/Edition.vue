@@ -15,11 +15,11 @@
 
           <v-text-field type="number" min="0" v-model="course.cupos" :rules="cuposRules" label="Cupos del curso"
             required></v-text-field>
-
-          <v-text-field type="number" min="0" v-model="course.inscritos" :rules="estadoTrue ? '' : inscritosRules"
-            label="Inscritos en el curso" required :disabled="estadoTrue">
+<!---->
+          <v-text-field type="number" min="0" v-model="course.inscritos" :rules="inscritosRules" 
+            label="Inscritos en el curso" required>
           </v-text-field>
-
+<!---->
           <v-text-field type="text" v-model="course.duracion" :rules="duracionRules" label="Duración del curso"
             required></v-text-field>
 
@@ -36,8 +36,7 @@
           </v-text-field>
 
           <v-switch v-model="course.estado" :label="course.estado ? 'Terminado: Si' : 'Terminado: No'" color="indigo"
-            :true-value="course.estado" hide-details></v-switch>
-
+            hide-details></v-switch>
 
           <div class="d-flex flex-column flex-sm-row justify-center align-center">
             <v-btn color="success" :disabled="!valid" class="mt-5" @click="validate">Actualizar</v-btn>
@@ -118,6 +117,7 @@
       },
       estadoTrue() {
         if (this.course.estado) {
+          console.log('computado')
           this.setInscritos();
           return true;
         } else
@@ -126,13 +126,14 @@
     },
     mounted() {
       let tmp = this.getOneCourse(this.id);
-      this.course=JSON.parse(JSON.stringify(tmp));
+      this.course = JSON.parse(JSON.stringify(tmp));
       let date = tmp.fechaRegistro.toDate();
       let dateFormat = new Intl.DateTimeFormat('cl').format(date);
       this.course.fechaRegistro = dateFormat;
     },
     methods: {
       setInscritos() {
+         console.log('en estado true')
         this.course.inscritos = 0;
       },
       modalCustom(text, btnSave, show) {

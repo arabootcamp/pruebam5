@@ -32,6 +32,7 @@ export const funcInscritosRules = (cupos) => {
     v => !!v || 'Inscritos es requerido',
     v => (v && v >= 0) || 'Debe ingresar un número mayor o igual a cero',
     v => (v <= cupos || 'Inscritos debe ser menor o igual que Cupos'),
+    //v =>  {console.log(v)}
   ];
 };
 

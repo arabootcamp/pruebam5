@@ -32,7 +32,7 @@
             <div class="text-h6 pa-12">{{modal.text}}</div>
           </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn elevation="2" @click="dialog.value = false">Close</v-btn>
+            <v-btn elevation="2" @click="dialog.value = false">Cerrar</v-btn>
           </v-card-actions>
         </v-card>
       </template>
@@ -50,6 +50,8 @@
   import {
     getAuth,
     signInWithEmailAndPassword,
+    setPersistence,
+    browserLocalPersistence
   } from "firebase/auth";
 
   export default {
@@ -72,9 +74,23 @@
       }
     },
     methods: {
-      validate() {
+      async validate() {
         if (this.$refs.form.validate()) {
-          const auth = getAuth();
+
+          try {
+            const auth = getAuth();
+            await setPersistence(auth, browserLocalPersistence);
+            await signInWithEmailAndPassword(auth, this.email, this.password);
+            this.modal.text = '';
+            this.modal.show = false;
+            this.$store.dispatch('setUserEmail', this.email);
+            this.$router.push('/home');
+          } catch (error) {
+            this.modal.text = error.code;
+            this.modal.show = true;
+            console.log(`Código de error: ${error.code} - Mensaje: ${error.message}`);
+          }
+          /*
           signInWithEmailAndPassword(auth, this.email, this.password)
             .then(() => {
               // Signed in
@@ -88,6 +104,7 @@
               this.modal.show = true;
               console.log(`Código de error: ${error.code} - Mensaje: ${error.message}`);
             });
+            */
         } else {
           this.modal.text = 'Debe ingresar email y password validos';
           this.modal.show = true;

@@ -56,6 +56,20 @@
       </v-row>
     </v-container>
 
+    <!--Modal-->
+    <v-dialog max-width="500" v-model="modal.show">
+      <template v-slot:default="dialog">
+        <v-card>
+          <v-toolbar color="deep-purple" dark></v-toolbar>
+          <v-card-text>
+            <div class="text-h6 pa-12">{{modal.text}}</div>
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn elevation="2" @click="dialog.value = false">Cerrar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
   </div>
 </template>
 
@@ -67,16 +81,27 @@
     components: {
       Navbar
     },
+    data() {
+      return {
+        modal: {
+          show: false,
+          test: '',
+        }
+      }
+    },
     computed: {
       courses() {
         return this.$store.getters.getCourses;
+      },
+      email() {
+        return this.$store.getters.getUserEmail;
       }
     },
     filters: {
       dateFormat(registerData) {
         return new Intl.DateTimeFormat('cl').format(registerData.toDate());
       },
-    }
+    },
   }
 </script>
 
