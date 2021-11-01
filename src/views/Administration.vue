@@ -17,25 +17,25 @@
     <v-container v-else>
       <v-data-table :headers="headers" :items="getCourses" :items-per-page="10" class="elevation-1">
 
-        <template v-slot:item.costo="{ item }">
+        <template v-slot:[`item.costo`]="{ item }">
           <v-chip color="green" dark>
             {{ item.costo | numberFormat}}
           </v-chip>
         </template>
 
-        <template v-slot:item.fechaRegistro="{ item }">
+        <template v-slot:[`item.fechaRegistro`]="{ item }">
           <v-chip color="green" dark>
             {{ item.fechaRegistro | dateFormat }}
           </v-chip>
         </template>
 
-        <template v-slot:item.estado="{ item }">
+        <template v-slot:[`item.estado`]="{ item }">
           <v-chip :color="item.estado ? 'blue lighten-1' : 'brown lighten-3'" dark>
             {{ item.estado ? 'Si' : 'No'}}
           </v-chip>
         </template>
 
-        <template v-slot:item.acciones="{ item }">
+        <template v-slot:[`item.acciones`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
