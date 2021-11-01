@@ -358,13 +358,9 @@
         });
       },
       saveAddItem() {
-        let tmp;
-        tmp = parseInt(this.addItem.cupos);
-        this.addItem.cupos = tmp;
-        tmp = parseInt(this.addItem.inscritos);
-        this.addItem.inscritos = tmp;
-        tmp = parseInt(this.addItem.costo);
-        this.addItem.costo = tmp;
+        this.addItem.cupos = parseInt(this.addItem.cupos);
+        this.addItem.inscritos = parseInt(this.addItem.inscritos);
+        this.addItem.costo = parseInt(this.addItem.costo);
 
         this.modalCustom('', false, false);
         this.dialog = false;

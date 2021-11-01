@@ -23,7 +23,7 @@
             required></v-text-field>
           <!---->
           <v-text-field type="number" min="0" v-model="course.inscritos" :rules="inscritosRules"
-            label="Inscritos en el curso" required>
+            label="Inscritos en el curso" required :disabled="disabledInscritos">
           </v-text-field>
           <!---->
           <v-text-field type="text" v-model="course.duracion" :rules="duracionRules" label="Duración del curso"
@@ -124,6 +124,12 @@
       inscritosRules() {
         return funcInscritosRules(this.course.cupos);
       },
+      disabledInscritos() {
+        if (this.course.estado)
+          return true;
+        else
+          return false;
+      }
     },
     mounted() {
       let tmp = this.getOneCourse(this.id);
@@ -158,6 +164,9 @@
       },
       modalConfirm() {
         this.modalCustom('', false, false);
+        this.course.cupos=parseInt(this.course.cupos);
+        this.course.inscritos=parseInt(this.course.inscritos);
+        this.course.costo=parseInt(this.course.costo);  
         this.$store.dispatch('updateCoursetDb', this.course)
           .then(() => {
             this.modalCustom('Actualización de curso realizada.', false, true)
