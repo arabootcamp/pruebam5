@@ -51,7 +51,7 @@
     getAuth,
     signInWithEmailAndPassword,
     setPersistence,
-    browserLocalPersistence
+    browserSessionPersistence
   } from "firebase/auth";
 
   export default {
@@ -79,7 +79,7 @@
 
           try {
             const auth = getAuth();
-            await setPersistence(auth, browserLocalPersistence);
+            await setPersistence(auth, browserSessionPersistence);
             await signInWithEmailAndPassword(auth, this.email, this.password);
             this.modal.text = '';
             this.modal.show = false;

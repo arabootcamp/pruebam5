@@ -8,7 +8,13 @@
         <v-btn elevation="2" color="primary" class="mt-3 ms-0 mt-sm-0 ms-sm-5" @click="showModalAddItem">AGREGAR CURSO
         </v-btn>
       </div>
-      <!--Tabla de cursos-->
+    </v-container>
+
+    <v-container v-if="loading" class="text-center mb-10">
+      <v-progress-circular indeterminate color="purple"></v-progress-circular>
+    </v-container>
+
+    <v-container v-else>
       <v-data-table :headers="headers" :items="getCourses" :items-per-page="10" class="elevation-1">
 
         <template v-slot:item.costo="{ item }">
@@ -266,8 +272,12 @@
         'getDiffCuposInscritos',
         'getEstadoTrue',
         'getActive',
-        'getTotalCourses'
+        'getTotalCourses',
+        'getLoading'
       ]),
+      loading() {
+        return this.getLoading;
+      },
       inscritosRules() {
         return funcInscritosRules(this.addItem.cupos);
       },
@@ -319,7 +329,7 @@
         this.closeDelete();
         this.$store.dispatch('deleteCourseDb', this.delItem.key)
           .then(() => {
-            this.modalCustom('Se elimino el curso a la BD', false, true)
+            this.modalCustom('Se elimino el curso de la BD', false, true)
           })
           .catch((error) => {
             this.modalCustom(error, false, true)

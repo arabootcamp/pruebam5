@@ -3,7 +3,11 @@
     <Navbar />
     <h1 class="my-10 text-center">Lista de Cursos</h1>
 
-    <v-container class="mb-5">
+    <v-container v-if="loading" class="text-center mb-10">
+      <v-progress-circular indeterminate color="purple"></v-progress-circular>
+    </v-container>
+
+    <v-container v-else class="mb-5">
       <v-row>
         <v-col cols="12" sm="6" lg="4" v-for="(item,index) in courses" :key="index">
           <v-card width="360" class="mx-auto">
@@ -75,7 +79,9 @@
 
 <script>
   import Navbar from '@/components/Navbar.vue'
-  import {mapGetters} from 'vuex'
+  import {
+    mapGetters
+  } from 'vuex'
   import {
     getAuth,
     onAuthStateChanged
@@ -95,16 +101,17 @@
       }
     },
     computed: {
-      ...mapGetters(
-        {courses:'getCourses',
-        userEmail:'getUserEmail',
-        preLogin:'getPreLogin'}
-      ),
+      ...mapGetters({
+        courses: 'getCourses',
+        userEmail: 'getUserEmail',
+        preLogin: 'getPreLogin',
+        loading: 'getLoading'
+      }),
     },
     filters: {
       dateFormat(timeStamp) {
-        let a=new Date(timeStamp.seconds*1000);
-        let time=new Intl.DateTimeFormat('cl').format(a);
+        let a = new Date(timeStamp.seconds * 1000);
+        let time = new Intl.DateTimeFormat('cl').format(a);
         return time;
       },
     },
@@ -114,16 +121,18 @@
       //console.log(this.userEmail)
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
-          if (user && this.userEmail != '' && this.preLogin) {
-            this.modal.text = 'Ingreso correctamente';
-            this.modal.show = true;
-            this.$store.dispatch('setPreLogin',false).then(
-              ()=>{ console.log(this.preLogin)}
-            )
-          }
-        });
-      }
+        if (user && this.userEmail != '' && this.preLogin) {
+          this.modal.text = 'Ingreso correctamente';
+          this.modal.show = true;
+          this.$store.dispatch('setPreLogin', false).then(
+            () => {
+              console.log(this.preLogin)
+            }
+          )
+        }
+      });
     }
+  }
 </script>
 
 <style scoped>

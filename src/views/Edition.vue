@@ -4,7 +4,13 @@
     <v-container class="my-10">
 
       <h1 class="text-center">Editando el curso: {{course.nombre}}</h1>
-      <div class="mt-5">
+
+      <div v-if="loading" class="text-center my-10">
+        <v-progress-circular indeterminate color="purple"></v-progress-circular>
+      </div>
+
+
+      <div v-else class="mt-5">
         <v-form ref="form" v-model="valid" lazy-validation>
 
           <v-text-field type="text" v-model="course.nombre" :counter="20" :rules="nombreRules" label="Nombre" required>
@@ -15,11 +21,11 @@
 
           <v-text-field type="number" min="0" v-model="course.cupos" :rules="cuposRules" label="Cupos del curso"
             required></v-text-field>
-<!---->
-          <v-text-field type="number" min="0" v-model="course.inscritos" :rules="inscritosRules" 
+          <!---->
+          <v-text-field type="number" min="0" v-model="course.inscritos" :rules="inscritosRules"
             label="Inscritos en el curso" required>
           </v-text-field>
-<!---->
+          <!---->
           <v-text-field type="text" v-model="course.duracion" :rules="duracionRules" label="Duración del curso"
             required></v-text-field>
 
@@ -34,9 +40,9 @@
 
           <v-text-field v-model="course.fechaRegistro" :rules="fechaRegistroRules" label="Fecha de Registro" required>
           </v-text-field>
-
+          <!---->
           <v-switch v-model="course.estado" :label="course.estado ? 'Terminado: Si' : 'Terminado: No'" color="indigo"
-            hide-details></v-switch>
+            hide-details @change="setInscritos()"></v-switch>
 
           <div class="d-flex flex-column flex-sm-row justify-center align-center">
             <v-btn color="success" :disabled="!valid" class="mt-5" @click="validate">Actualizar</v-btn>
@@ -111,29 +117,26 @@
     },
     props: ['id'],
     computed: {
-      ...mapGetters(['getOneCourse']),
+      ...mapGetters(['getOneCourse', 'getLoading']),
+      loading() {
+        return this.getLoading;
+      },
       inscritosRules() {
         return funcInscritosRules(this.course.cupos);
-      },
-      estadoTrue() {         
-        if (this.course.estado) {
-          this.setInscritos();
-          return true;
-        } else
-          return false;
       },
     },
     mounted() {
       let tmp = this.getOneCourse(this.id);
       this.course = JSON.parse(JSON.stringify(tmp));
-      let date = tmp.fechaRegistro.toDate();
-      let dateFormat = new Intl.DateTimeFormat('cl').format(date);
-      this.course.fechaRegistro = dateFormat;
+      let timeStamp = tmp.fechaRegistro;
+      let a = new Date(timeStamp.seconds * 1000);
+      let time = new Intl.DateTimeFormat('cl').format(a);
+      this.course.fechaRegistro = time;
     },
     methods: {
       setInscritos() {
-         console.log('en estado true')
-        this.course.inscritos = 0;
+        if (this.course.estado)
+          this.course.inscritos = 0;
       },
       modalCustom(text, btnSave, show) {
         this.modal.text = text;

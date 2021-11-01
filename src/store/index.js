@@ -14,7 +14,7 @@ import {
 import VuexPersist from 'vuex-persist'
 
 const vuexLocal = new VuexPersist({
-    storage:window.sessionStorage
+  storage: window.sessionStorage
 });
 
 
@@ -22,6 +22,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    loading: false,
     preLogin: false,
     userEmail: '',
     courses: []
@@ -69,7 +70,8 @@ export default new Vuex.Store({
       }
       return {};
     },
-    getPreLogin:state=>state.preLogin,
+    getPreLogin: state => state.preLogin,
+    getLoading: state => state.loading,
   },
   mutations: {
     mutaUserEmail: (state, data) => {
@@ -78,7 +80,12 @@ export default new Vuex.Store({
     mutaCourses: (state, coursesLst) => {
       state.courses = coursesLst;
     },
-    mutaPreLogin: (state,bool) => {state.preLogin=bool}
+    mutaPreLogin: (state, bool) => {
+      state.preLogin = bool
+    },
+    mutaLoading: (state, bool) => {
+      state.loading = bool
+    }
   },
   actions: {
     setUserEmail({
@@ -89,6 +96,7 @@ export default new Vuex.Store({
     async coursesRequestDb({
       commit
     }) {
+      commit('mutaLoading', true);
       let coursesLst = [];
       const querySnapshot = await getDocs(collection(dbFire, "courses"));
       querySnapshot.forEach((doc) => {
@@ -98,16 +106,21 @@ export default new Vuex.Store({
         });
       });
       commit('mutaCourses', coursesLst);
+      commit('mutaLoading', false);
     },
     async addCoursetDb({
+      commit,
       dispatch
     }, course) {
+      commit('mutaLoading', true);
       await addDoc(collection(dbFire, "courses"), course);
       await dispatch('coursesRequestDb');
+      commit('mutaLoading', false);
     },
     async updateCoursetDb({
-      dispatch
+      commit,dispatch
     }, payload) {
+       commit('mutaLoading',true);
       let key = payload.key;
       delete payload.key;
       let array = payload.fechaRegistro.split('-');
@@ -115,17 +128,22 @@ export default new Vuex.Store({
       data.fechaRegistro = new Date(array[2], array[1], array[0])
       await setDoc(doc(dbFire, "courses", key), data);
       await dispatch('coursesRequestDb');
+       commit('mutaLoading',false);
     },
     async deleteCourseDb({
-      dispatch
+      commit,dispatch
     }, delKey) {
+       commit('mutaLoading',true);
       await deleteDoc(doc(dbFire, "courses", delKey));
       await dispatch('coursesRequestDb');
+       commit('mutaLoading',false);
     },
-    setPreLogin({commit},bool){
-      commit('mutaPreLogin',bool);
+    setPreLogin({
+      commit
+    }, bool) {
+      commit('mutaPreLogin', bool);
     }
   },
   modules: {},
-  plugins:[vuexLocal.plugin]
+  plugins: [vuexLocal.plugin]
 })

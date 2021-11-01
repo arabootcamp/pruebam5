@@ -22,23 +22,26 @@ export const urlRules = [
 ];
 
 export const cuposRules = [
-  v => !!v || 'Cupos es requerido',
-  v => (v  && v >= 0) ||
-  'Debe ingresar un número mayor o igual a cero',
+    v => (!(isNaN(parseInt(v)))) || 'Cupos es requerido',
+    v => (Number.isInteger(parseFloat(v))) || 'Cupos debe ser entero',
+    v => (parseInt(v) >= 0) || 'Cupos debe ser mayor o igual a cero'
 ];
 
 export const funcInscritosRules = (cupos) => {
   return [
-    v => !!v || 'Inscritos es requerido',
-    v => (v && v >= 0) || 'Debe ingresar un número mayor o igual a cero',
-    v => (v <= cupos || 'Inscritos debe ser menor o igual que Cupos'),
-    //v =>  {console.log(v)}
+    //determina vacio con true
+    v => (!(isNaN(parseInt(v)))) || 'Inscritos es requerido',
+    //Entero
+    v => (Number.isInteger(parseFloat(v))) || 'Inscritos debe ser entero',
+    // 0 >= X <= Cupos
+    v => ((parseInt(v) >= 0) && (parseInt(v) <= cupos)) || 'Inscritos debe ser mayor o igual a cero y menor o igual que Cupos'
   ];
 };
 
 export const costoRules = [
-  v => !!v || 'Costo es requerido',
-  v => (v && v >= 0) || 'Debe ingresar un número mayor o igual a cero',
+    v => (!(isNaN(parseInt(v)))) || 'Costo es requerido',
+    v => (Number.isInteger(parseFloat(v))) || 'Costo debe ser entero',
+    v => (parseInt(v) >= 0) || 'Costo debe ser mayor o igual a cero'
 ];
 
 export const codigoRules = [
