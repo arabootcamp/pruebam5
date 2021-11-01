@@ -126,7 +126,7 @@
           this.modal.show = true;
           this.$store.dispatch('setPreLogin', false).then(
             () => {
-              console.log(this.preLogin)
+              console.log('preLogin: '+this.preLogin)
             }
           )
         }
