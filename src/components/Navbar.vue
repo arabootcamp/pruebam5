@@ -91,7 +91,6 @@
     },
     methods: {
       logout() {
-        console.log(this.userEmail); ////
         const auth = getAuth();
         signOut(auth)
           .then(() => this.$store.dispatch('setUserEmail', ''))

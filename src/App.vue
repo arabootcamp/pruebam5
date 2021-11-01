@@ -48,19 +48,11 @@
     mounted() {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
-        if (user && this.userEmail != '') {
-          this.modal.text = 'Ingreso correctamente';
-          this.modal.show = true;
-        } else if (!user && this.userEmail != '') {
+        if (!user && this.userEmail != '') {
           this.modal.text = 'Se deslogeo correctamente';
           this.modal.show = true;
         }
       });
     },
-    updated() {
-      if (getAuth().currentUser) {
-        this.$store.dispatch('setUserEmail', getAuth().currentUser.email);
-      }
-    }
   };
 </script>

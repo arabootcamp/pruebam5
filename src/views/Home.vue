@@ -75,6 +75,11 @@
 
 <script>
   import Navbar from '@/components/Navbar.vue'
+  import {mapGetters} from 'vuex'
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "firebase/auth";
 
   export default {
     name: 'Home',
@@ -90,19 +95,35 @@
       }
     },
     computed: {
-      courses() {
-        return this.$store.getters.getCourses;
-      },
-      email() {
-        return this.$store.getters.getUserEmail;
-      }
+      ...mapGetters(
+        {courses:'getCourses',
+        userEmail:'getUserEmail',
+        preLogin:'getPreLogin'}
+      ),
     },
     filters: {
-      dateFormat(registerData) {
-        return new Intl.DateTimeFormat('cl').format(registerData.toDate());
+      dateFormat(timeStamp) {
+        let a=new Date(timeStamp.seconds*1000);
+        let time=new Intl.DateTimeFormat('cl').format(a);
+        return time;
       },
     },
-  }
+    mounted() {
+      //console.log('******************')
+      //console.log(this.preLogin)
+      //console.log(this.userEmail)
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+          if (user && this.userEmail != '' && this.preLogin) {
+            this.modal.text = 'Ingreso correctamente';
+            this.modal.show = true;
+            this.$store.dispatch('setPreLogin',false).then(
+              ()=>{ console.log(this.preLogin)}
+            )
+          }
+        });
+      }
+    }
 </script>
 
 <style scoped>

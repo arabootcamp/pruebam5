@@ -273,8 +273,10 @@
       },
     },
     filters: {
-      dateFormat(registerData) {
-        return new Intl.DateTimeFormat('cl').format(registerData.toDate());
+      dateFormat(timeStamp) {
+        let a = new Date(timeStamp.seconds * 1000);
+        let time = new Intl.DateTimeFormat('cl').format(a);
+        return time;
       },
       numberFormat(number) {
         return new Intl.NumberFormat('cl', {
@@ -366,7 +368,6 @@
           })
       },
       closeAddItem() {
-
         this.$nextTick(() => {
           this.reset();
         });

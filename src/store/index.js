@@ -11,11 +11,18 @@ import {
 import {
   dbFire
 } from '@/config/firebaseConfig.js'
+import VuexPersist from 'vuex-persist'
+
+const vuexLocal = new VuexPersist({
+    storage:window.sessionStorage
+});
+
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    preLogin: false,
     userEmail: '',
     courses: []
   },
@@ -62,6 +69,7 @@ export default new Vuex.Store({
       }
       return {};
     },
+    getPreLogin:state=>state.preLogin,
   },
   mutations: {
     mutaUserEmail: (state, data) => {
@@ -70,6 +78,7 @@ export default new Vuex.Store({
     mutaCourses: (state, coursesLst) => {
       state.courses = coursesLst;
     },
+    mutaPreLogin: (state,bool) => {state.preLogin=bool}
   },
   actions: {
     setUserEmail({
@@ -113,6 +122,10 @@ export default new Vuex.Store({
       await deleteDoc(doc(dbFire, "courses", delKey));
       await dispatch('coursesRequestDb');
     },
+    setPreLogin({commit},bool){
+      commit('mutaPreLogin',bool);
+    }
   },
-  modules: {}
+  modules: {},
+  plugins:[vuexLocal.plugin]
 })

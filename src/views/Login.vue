@@ -83,7 +83,9 @@
             await signInWithEmailAndPassword(auth, this.email, this.password);
             this.modal.text = '';
             this.modal.show = false;
-            this.$store.dispatch('setUserEmail', this.email);
+            await this.$store.dispatch('setUserEmail', this.email);
+            //console.log(this.$store.state.userEmail)
+            await this.$store.dispatch('setPreLogin',true);
             this.$router.push('/home');
           } catch (error) {
             this.modal.text = error.code;

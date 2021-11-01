@@ -115,9 +115,8 @@
       inscritosRules() {
         return funcInscritosRules(this.course.cupos);
       },
-      estadoTrue() {
+      estadoTrue() {         
         if (this.course.estado) {
-          console.log('computado')
           this.setInscritos();
           return true;
         } else
