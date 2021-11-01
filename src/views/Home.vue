@@ -96,7 +96,7 @@
       return {
         modal: {
           show: false,
-          test: '',
+          text: '',
         }
       }
     },
