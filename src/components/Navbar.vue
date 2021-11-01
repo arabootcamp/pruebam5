@@ -94,6 +94,7 @@
         const auth = getAuth();
         signOut(auth)
           .then(() => this.$store.dispatch('setUserEmail', ''))
+          .then(()=>this.$store.dispatch('setPreLogin', false))
           .then(() => {
             this.$router.push('/')
           })

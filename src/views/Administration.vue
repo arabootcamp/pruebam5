@@ -133,8 +133,8 @@
         <v-card-text class="text-h6 pa-12">Estas seguro de eliminar el item: {{delItem.nombre}}?</v-card-text>
         <v-card-actions class="justify-end">
           <v-spacer></v-spacer>
-          <v-btn elevation="2" class="me-4" @click="deleteItemConfirm">Confirmar</v-btn>
-          <v-btn elevation="2" @click="closeDelete">Cerrar</v-btn>
+          <v-btn elevation="2" class="me-4" @click="deleteItemConfirm">Sí, borrar</v-btn>
+          <v-btn elevation="2" @click="closeDelete">Cancelar</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -149,8 +149,9 @@
             <div class="text-h6 pa-12">{{modal.text}}</div>
           </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn v-if="modal.btnSave" elevation="2" @click="saveAddItem" class="me-4">Confirmar</v-btn>
-            <v-btn elevation="2" @click="dialog.value = false">Cerrar</v-btn>
+            <v-btn v-if="modal.btnSave.show" elevation="2" @click="saveAddItem" class="me-4">{{modal.btnSave.text}}
+            </v-btn>
+            <v-btn elevation="2" @click="dialog.value = false">{{modal.btnCancel.text}}</v-btn>
           </v-card-actions>
         </v-card>
       </template>
@@ -186,7 +187,14 @@
         modal: {
           show: false,
           text: '',
-          btnSave: false,
+          btnSave: {
+            show: false,
+            text: 'Agregar Curso',
+          },
+          btnCancel: {
+            show: true,
+            text: 'Cancelar'
+          }
         },
         nombreRules,
         urlRules,
@@ -296,10 +304,11 @@
       },
     },
     methods: {
-      modalCustom(text, btnSave, show) {
+      modalCustom(text, btnSave, show, btnCancelText) {
         this.modal.text = text;
-        this.modal.btnSave = btnSave;
+        this.modal.btnSave.show = btnSave;
         this.modal.show = show;
+        this.modal.btnCancel.text = btnCancelText;
       },
       editItem(item) {
         this.$router.push({
@@ -329,10 +338,10 @@
         this.closeDelete();
         this.$store.dispatch('deleteCourseDb', this.delItem.key)
           .then(() => {
-            this.modalCustom('Se elimino el curso de la BD', false, true)
+            this.modalCustom('Se elimino el curso de la BD', false, true,'Cerrar')
           })
           .catch((error) => {
-            this.modalCustom(error, false, true)
+            this.modalCustom(error, false, true,'Cerrar')
           })
       },
       resetAddItem() {
@@ -367,10 +376,10 @@
         this.valid = true;
         this.$store.dispatch('addCoursetDb', this.addItem)
           .then(() => {
-            this.modalCustom('Se ingreso el curso a la BD', false, true);
+            this.modalCustom('Se ingreso el curso a la BD', false, true,'Cerrar');
           })
           .catch((error) => {
-            this.modalCustom(error, false, true)
+            this.modalCustom(error, false, true,'Cerrar')
           })
       },
       closeAddItem() {
@@ -381,9 +390,9 @@
       },
       validate() {
         if (this.$refs.form.validate())
-          this.modalCustom('¿Esta seguro de añadir este curso?', true, true);
+          this.modalCustom('¿Esta seguro de añadir este curso?', true, true,'Cancelar');
         else
-          this.modalCustom('Debe completar correctamente todos los campos', false, true);
+          this.modalCustom('Debe completar correctamente todos los campos', false, true,'Cerrar');
       },
       reset() {
         this.$refs.form.reset();

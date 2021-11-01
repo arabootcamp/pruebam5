@@ -72,22 +72,22 @@
       }
     },
     methods: {
-      validate() {
+      async validate() {
         if (this.$refs.form.validate()) {
-          const auth = getAuth();
-          createUserWithEmailAndPassword(auth, this.email, this.password)
-            .then(() => {
-              //Registro exitoso
-              this.modal.text = '';
-              this.modal.show = false;
-              this.$store.dispatch('setUserEmail', this.email);
-              this.$router.push('/home');
-            })
-            .catch((error) => {
-              this.modal.text = error.code;
-              this.modal.show = true;
-              console.log(`Código de error: ${error.code} - Mensaje: ${error.message}`);
-            });
+          try {
+            const auth = getAuth();
+            await createUserWithEmailAndPassword(auth, this.email, this.password)
+            //Registro exitoso
+            this.modal.text = '';
+            this.modal.show = false;
+            await this.$store.dispatch('setUserEmail', this.email);
+            await this.$store.dispatch('setPreLogin', true);
+            this.$router.push('/home');
+          } catch (error) {
+            this.modal.text = error.code;
+            this.modal.show = true;
+            console.log(`Código de error: ${error.code} - Mensaje: ${error.message}`);
+          }
         }
       },
       reset() {

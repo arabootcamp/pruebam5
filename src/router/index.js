@@ -60,6 +60,7 @@ router.beforeEach((to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (getAuth().currentUser) {
+      //console.log('currentUser '+getAuth().currentUser.email)
       next({})
     } else {
       const auth = getAuth();
